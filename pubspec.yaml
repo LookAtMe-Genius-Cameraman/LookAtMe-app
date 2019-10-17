@@ -83,4 +83,5 @@ flutter:
   # see https://flutter.dev/custom-fonts/#from-packages
   assets:
     - assets/locale/localization_en.json
+    - assets/locale/localization_hi.json
     - assets/locale/localization_tr.json
