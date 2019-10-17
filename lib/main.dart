@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 //import 'package:ping_discover_network/ping_discover_network.dart';
 //import 'package:wifi/wifi.dart';
 //import 'package:http/http.dart';
@@ -17,14 +18,13 @@ import 'package:look_at_me/model/RadioModel.dart';
 import 'package:look_at_me/constant/Constant.dart';
 import 'package:look_at_me/localization/localizations.dart';
 
-
 void main() => runApp(new LookAtMe());
 
 class LookAtMe extends StatefulWidget {
-
   static void setLocale(BuildContext context, Locale newLocale) async {
     print('setLocale()');
-    _LookAtMeState state = context.ancestorStateOfType(TypeMatcher<_LookAtMeState>());
+    _LookAtMeState state =
+        context.ancestorStateOfType(TypeMatcher<_LookAtMeState>());
 
     state.setState(() {
       state.locale = newLocale;
@@ -36,7 +36,6 @@ class LookAtMe extends StatefulWidget {
 }
 
 class _LookAtMeState extends State<LookAtMe> {
-
   Locale locale;
   bool localeLoaded = false;
 
@@ -95,7 +94,6 @@ class _LookAtMeState extends State<LookAtMe> {
     return Locale(
         prefs.getString('languageCode'), prefs.getString('countryCode'));
   }
-
 }
 
 class LookAtMeHome extends StatefulWidget {
@@ -109,11 +107,10 @@ class LookAtMeHome extends StatefulWidget {
 
 class _LookAtMeHomeState extends State<LookAtMeHome>
     with AfterLayoutMixin<LookAtMeHome> {
-
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   List<RadioModel> _langList = new List<RadioModel>();
-  int _index=0;
+  int _index = 0;
 
   final idTextController = TextEditingController();
 
@@ -122,7 +119,6 @@ class _LookAtMeHomeState extends State<LookAtMeHome>
     super.initState();
 
     _initLanguage();
-
   }
 
   @override
@@ -142,18 +138,17 @@ class _LookAtMeHomeState extends State<LookAtMeHome>
     return new Scaffold(
         body: new Container(
             child: new Column(
-              children: <Widget>[
-                _buildMainWidget(),
-                _buildLanguageWidget(),
-              ],
-            )),
+          children: <Widget>[
+            _buildMainWidget(),
+            _buildLanguageWidget(),
+          ],
+        )),
         backgroundColor: Colors.black);
   }
 
   Widget _buildMainWidget() {
     return new Container(
         margin: const EdgeInsets.only(top: 200),
-
         child: new Padding(
             padding: const EdgeInsets.all(52.0),
             child: new Column(
@@ -162,7 +157,8 @@ class _LookAtMeHomeState extends State<LookAtMeHome>
                   new TextField(
                     style: new TextStyle(color: Colors.white),
                     decoration: new InputDecoration.collapsed(
-                      hintText: AppLocalizations.of(context).text('LookAtMe Device ID/Name'),
+                      hintText: AppLocalizations.of(context)
+                          .text('LookAtMe Device ID/Name'),
                       hintStyle: new TextStyle(color: Colors.grey),
                     ),
                     controller: idTextController,
@@ -180,20 +176,21 @@ class _LookAtMeHomeState extends State<LookAtMeHome>
 //                                    print(idTextController.text);
                               removeCacheData('id');
                               setCacheData('id', idTextController.text);
-                              foundAndConnectDevice(context, idTextController.text);
+                              foundAndConnectDevice(
+                                  context, idTextController.text);
                             } else {
                               print("empty");
                             }
                           },
                           color: Colors.blueGrey,
-                          label: Text(AppLocalizations.of(context).text('Connect')),
+                          label: Text(
+                              AppLocalizations.of(context).text('Connect')),
                           icon: Icon(Icons.check_circle),
                         ),
                       )
                     ],
                   )
-                ]))
-    );
+                ])));
   }
 
   Widget _buildLanguageWidget() {
@@ -233,15 +230,15 @@ class _LookAtMeHomeState extends State<LookAtMeHome>
   }
 
   List<RadioModel> _getLangList() {
-    if(_index==0) {
+    if (_index == 0) {
       _langList.add(new RadioModel(true, 'English'));
       _langList.add(new RadioModel(false, 'Türkçe'));
       _langList.add(new RadioModel(false, 'हिंदी'));
-    } else if(_index==1) {
+    } else if (_index == 1) {
       _langList.add(new RadioModel(false, 'English'));
       _langList.add(new RadioModel(true, 'Türkçe'));
       _langList.add(new RadioModel(false, 'हिंदी'));
-    } else if(_index==1) {
+    } else if (_index == 1) {
       _langList.add(new RadioModel(false, 'English'));
       _langList.add(new RadioModel(false, 'Türkçe'));
       _langList.add(new RadioModel(true, 'हिंदी'));
@@ -289,9 +286,9 @@ class _LookAtMeHomeState extends State<LookAtMeHome>
 
   void _setupLangList() {
     setState(() {
-      _langList.add(new RadioModel(_index==0?true:false, 'English'));
-      _langList.add(new RadioModel(_index==1?true:false, 'हिंदी'));
-      _langList.add(new RadioModel(_index==2?true:false, 'Türkçe'));
+      _langList.add(new RadioModel(_index == 0 ? true : false, 'English'));
+      _langList.add(new RadioModel(_index == 1 ? true : false, 'हिंदी'));
+      _langList.add(new RadioModel(_index == 2 ? true : false, 'Türkçe'));
     });
   }
 
@@ -324,7 +321,6 @@ class _LookAtMeHomeState extends State<LookAtMeHome>
       }
     });
   }
-
 }
 
 class RadioItem extends StatelessWidget {
@@ -359,7 +355,7 @@ class RadioItem extends StatelessWidget {
                             ? Colors.redAccent
                             : Colors.transparent),
                     borderRadius:
-                    const BorderRadius.all(const Radius.circular(2.0)),
+                        const BorderRadius.all(const Radius.circular(2.0)),
                   ),
                 ),
                 new Container(
@@ -368,7 +364,7 @@ class RadioItem extends StatelessWidget {
                     _item.title,
                     style: TextStyle(
                       color:
-                      _item.isSelected ? Colors.redAccent : Colors.black54,
+                          _item.isSelected ? Colors.redAccent : Colors.black54,
                     ),
                   ),
                 )

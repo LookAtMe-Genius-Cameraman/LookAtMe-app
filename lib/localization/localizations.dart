@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show SynchronousFuture;
-import 'package:flutter/services.dart' show  rootBundle;
+import 'package:flutter/services.dart' show rootBundle;
 
 class AppLocalizations {
   AppLocalizations(this.locale);
@@ -23,20 +23,21 @@ class AppLocalizations {
 
   static Future<AppLocalizations> load(Locale locale) async {
     AppLocalizations appLocalizations = new AppLocalizations(locale);
-    String jsonContent = await rootBundle.loadString("assets/locale/localization_${locale.languageCode}.json");
+    String jsonContent = await rootBundle
+        .loadString("assets/locale/localization_${locale.languageCode}.json");
     _localizedValues = json.decode(jsonContent);
     return appLocalizations;
   }
 
   get currentLanguage => locale.languageCode;
-
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
   const AppLocalizationsDelegate();
 
   @override
-  bool isSupported(Locale locale) => ['en', 'hi', 'tr'].contains(locale.languageCode);
+  bool isSupported(Locale locale) =>
+      ['en', 'hi', 'tr'].contains(locale.languageCode);
 
   @override
   Future<AppLocalizations> load(Locale locale) => AppLocalizations.load(locale);

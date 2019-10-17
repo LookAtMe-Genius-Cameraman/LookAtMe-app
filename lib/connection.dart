@@ -9,7 +9,6 @@ import 'package:flutter/services.dart';
 
 import 'package:look_at_me/web_view.dart';
 
-
 foundAndConnectDevice(context, deviceID) async {
   final String ip = await Wifi.ip;
   print(ip);
@@ -21,7 +20,8 @@ foundAndConnectDevice(context, deviceID) async {
   while (!isConnected) {
     stream.listen((NetworkAddress addr) {
       if (addr.exists) {
-        isConnected = _makePostRequest(context, addr.ip, port, '/api/access', deviceID);
+        isConnected =
+            _makePostRequest(context, addr.ip, port, '/api/access', deviceID);
       }
     }).onDone(() => print('finish.'));
   }
@@ -34,11 +34,9 @@ _makePostRequest(context, ipAddress, port, urls, deviceID) async {
   Map<String, String> headers = {
     "Content-type": "application/json; charset=UTF-8"
   };
-  String jsonData =
-      '{"id": "' + deviceID + '"}'; // make POST request
+  String jsonData = '{"id": "' + deviceID + '"}'; // make POST request
   Response response = await post(url,
-      headers: headers,
-      body: jsonData); // check the status code for the result
+      headers: headers, body: jsonData); // check the status code for the result
   int statusCode = response
       .statusCode; // this API passes back the id of the new item added to the body
   String responseData = response.body;
@@ -50,7 +48,8 @@ _makePostRequest(context, ipAddress, port, urls, deviceID) async {
         .push(MaterialPageRoute<Null>(builder: (BuildContext context) {
       SystemChrome.setEnabledSystemUIOverlays([]);
       return new WebViewWebPage(
-          url: 'http://$ipAddress:${port.toString()}$urls?id=${result["data"].toString()}');
+          url:
+              'http://$ipAddress:${port.toString()}$urls?id=${result["data"].toString()}');
     }));
     return true;
   }
