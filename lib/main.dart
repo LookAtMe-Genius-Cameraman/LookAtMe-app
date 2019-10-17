@@ -148,7 +148,7 @@ class _LookAtMeHomeState extends State<LookAtMeHome>
 
   Widget _buildMainWidget() {
     return new Container(
-        margin: const EdgeInsets.only(top: 200),
+        margin: const EdgeInsets.only(top: 220),
         child: new Padding(
             padding: const EdgeInsets.all(52.0),
             child: new Column(
@@ -198,8 +198,8 @@ class _LookAtMeHomeState extends State<LookAtMeHome>
       child: Container(
 //        constraints: BoxConstraints(minHeight: 100, maxHeight: 200),
         padding: EdgeInsets.fromLTRB(4.0, 4.0, 4.0, 4.0),
-        margin: EdgeInsets.only(left: 4.0, right: 4.0, top: 250),
-        color: Colors.grey[100],
+        margin: EdgeInsets.only(left: 4.0, right: 4.0, top: 230),
+        color: Colors.black,
         child: ListView.builder(
           itemCount: _langList.length,
           scrollDirection: Axis.horizontal,
@@ -333,7 +333,7 @@ class RadioItem extends StatelessWidget {
     return new Container(
       padding: EdgeInsets.fromLTRB(4.0, 4.0, 4.0, 4.0),
       margin: EdgeInsets.only(left: 4.0, right: 4.0),
-      color: Colors.grey[100],
+      color: Colors.black,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
@@ -364,7 +364,7 @@ class RadioItem extends StatelessWidget {
                     _item.title,
                     style: TextStyle(
                       color:
-                          _item.isSelected ? Colors.redAccent : Colors.black54,
+                          _item.isSelected ? Colors.redAccent : Colors.grey,
                     ),
                   ),
                 )
