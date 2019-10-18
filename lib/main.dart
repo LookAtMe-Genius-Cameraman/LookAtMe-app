@@ -116,6 +116,8 @@ class _LookAtMeHomeState extends State<LookAtMeHome>
 
   final idTextController = TextEditingController();
 
+  MediaQueryData queryData;
+
   @override
   void initState() {
     super.initState();
@@ -137,70 +139,76 @@ class _LookAtMeHomeState extends State<LookAtMeHome>
 
   @override
   Widget build(BuildContext context) {
+    queryData = MediaQuery.of(context);
+
     return new Scaffold(
         body: new Container(
+            margin: const EdgeInsets.only(bottom: 0),
             child: new Column(
-          children: <Widget>[
-            _buildMainWidget(),
-            _buildLanguageWidget(),
-          ],
-        )),
+//              mainAxisAlignment: MainAxisAlignment.center,
+
+              children: <Widget>[
+                _buildMainWidget(),
+                new Container(
+                  color: Colors.black,
+                  height: queryData.size.height - 440,
+                ),
+                _buildLanguageWidget(),
+              ],
+            )),
         backgroundColor: Colors.black);
   }
 
   Widget _buildMainWidget() {
     return new Container(
-        margin: const EdgeInsets.only(top: 220),
+        margin: const EdgeInsets.only(top: 200),
         child: new Padding(
             padding: const EdgeInsets.all(52.0),
-            child: new Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+            child: new Column(children: <Widget>[
+              new TextField(
+                style: new TextStyle(color: Colors.white),
+                decoration: new InputDecoration.collapsed(
+                  hintText: AppLocalizations.of(context)
+                      .text('LookAtMe Device ID/Name'),
+                  hintStyle: new TextStyle(color: Colors.grey),
+                ),
+                controller: idTextController,
+              ),
+              new Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                  new TextField(
-                    style: new TextStyle(color: Colors.white),
-                    decoration: new InputDecoration.collapsed(
-                      hintText: AppLocalizations.of(context)
-                          .text('LookAtMe Device ID/Name'),
-                      hintStyle: new TextStyle(color: Colors.grey),
-                    ),
-                    controller: idTextController,
-                  ),
-                  new Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      new Container(
-                        margin: const EdgeInsets.only(top: 10.0),
-                        child: new FlatButton.icon(
-                          padding: const EdgeInsets.all(8.0),
-                          textColor: Colors.white,
-                          onPressed: () {
-                            if (idTextController.text.isNotEmpty) {
+                  new Container(
+                    margin: const EdgeInsets.only(top: 10.0),
+                    child: new FlatButton.icon(
+                      padding: const EdgeInsets.all(8.0),
+                      textColor: Colors.white,
+                      onPressed: () {
+                        if (idTextController.text.isNotEmpty) {
 //                                    print(idTextController.text);
-                              removeCacheData('id');
-                              setCacheData('id', idTextController.text);
-                              foundAndConnectDevice(
-                                  context, idTextController.text);
-                            } else {
-                              print("empty");
-                            }
-                          },
-                          color: Colors.blueGrey,
-                          label: Text(
-                              AppLocalizations.of(context).text('Connect')),
-                          icon: Icon(Icons.check_circle),
-                        ),
-                      )
-                    ],
+                          removeCacheData('id');
+                          setCacheData('id', idTextController.text);
+                          foundAndConnectDevice(context, idTextController.text);
+                        } else {
+                          print("empty");
+                        }
+                      },
+                      color: Colors.blueGrey,
+                      label: Text(AppLocalizations.of(context).text('Connect')),
+                      icon: Icon(Icons.check_circle),
+                    ),
                   )
-                ])));
+                ],
+              )
+            ])));
   }
 
   Widget _buildLanguageWidget() {
     return new Flexible(
       child: Container(
+        height: 60,
 //        constraints: BoxConstraints(minHeight: 100, maxHeight: 200),
         padding: EdgeInsets.fromLTRB(4.0, 4.0, 4.0, 4.0),
-        margin: EdgeInsets.only(left: 4.0, right: 4.0, top: 230),
+        margin: EdgeInsets.only(left: 4.0, right: 4.0),
         color: Colors.black,
         child: ListView.builder(
           itemCount: _langList.length,
@@ -231,7 +239,16 @@ class _LookAtMeHomeState extends State<LookAtMeHome>
     }
   }
 
-  List languageData = [['de', 'Deutsch'], ['en', 'English'], ['es', 'Español'], ['fr', 'Français'], ['hi', 'हिंदी'], ['it', 'Italiano'], ['kp', '한국의'], ['tr', 'Türkçe']];
+  List languageData = [
+    ['de', 'Deutsch'],
+    ['en', 'English'],
+    ['es', 'Español'],
+    ['fr', 'Français'],
+    ['hi', 'हिंदी'],
+    ['it', 'Italiano'],
+    ['kp', '한국의'],
+    ['tr', 'Türkçe']
+  ];
 
   List<RadioModel> _getLangList() {
     for (var i = 0; i < languageData.length; i++) {
@@ -277,7 +294,8 @@ class _LookAtMeHomeState extends State<LookAtMeHome>
   void _setupLangList() {
     setState(() {
       for (var i = 0; i < languageData.length; i++) {
-        _langList.add(new RadioModel(_index == i ? true : false, languageData[i][1]));
+        _langList.add(
+            new RadioModel(_index == i ? true : false, languageData[i][1]));
       }
     });
   }
@@ -295,10 +313,8 @@ class _LookAtMeHomeState extends State<LookAtMeHome>
   void _handleRadioValueChanged() {
     print("SELCET_VALUE: " + _index.toString());
     setState(() {
-
       print(languageData[_index][1]);
       _updateLocale(languageData[_index][0], '');
-
     });
   }
 }
@@ -315,9 +331,9 @@ class RadioItem extends StatelessWidget {
       margin: EdgeInsets.only(left: 4.0, right: 4.0),
       color: Colors.black,
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Container(
+            color: Colors.black,
             margin: EdgeInsets.only(left: 4.0, right: 4.0),
             child: new Column(
               mainAxisSize: MainAxisSize.max,
@@ -343,8 +359,7 @@ class RadioItem extends StatelessWidget {
                   child: new Text(
                     _item.title,
                     style: TextStyle(
-                      color:
-                          _item.isSelected ? Colors.redAccent : Colors.grey,
+                      color: _item.isSelected ? Colors.redAccent : Colors.grey,
                     ),
                   ),
                 )
