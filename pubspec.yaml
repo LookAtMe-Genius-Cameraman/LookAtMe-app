@@ -82,6 +82,11 @@ flutter:
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
   assets:
+    - assets/locale/localization_de.json
     - assets/locale/localization_en.json
+    - assets/locale/localization_es.json
+    - assets/locale/localization_fr.json
     - assets/locale/localization_hi.json
+    - assets/locale/localization_it.json
+    - assets/locale/localization_kp.json
     - assets/locale/localization_tr.json

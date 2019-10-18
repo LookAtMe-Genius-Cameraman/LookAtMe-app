@@ -1,21 +1,12 @@
-import 'dart:convert';
-
-//import 'package:ping_discover_network/ping_discover_network.dart';
-//import 'package:wifi/wifi.dart';
-//import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'package:look_at_me/after_layout.dart';
 import 'package:look_at_me/connection.dart';
 import 'package:look_at_me/caching.dart';
-import 'package:look_at_me/web_view.dart';
 import 'package:look_at_me/model/RadioModel.dart';
-import 'package:look_at_me/constant/Constant.dart';
 import 'package:look_at_me/localization/localizations.dart';
 
 void main() => runApp(new LookAtMe());
@@ -69,9 +60,14 @@ class _LookAtMeState extends State<LookAtMe> {
           GlobalWidgetsLocalizations.delegate,
         ],
         supportedLocales: [
+          const Locale('de', ''), // German
           const Locale('en', ''), // English
-          const Locale('tr', ''), // Turkish
+          const Locale('es', ''), // Spanish
+          const Locale('fr', ''), // French
           const Locale('hi', ''), // Turkish
+          const Locale('it', ''), // Italian
+          const Locale('kp', ''), // Korean
+          const Locale('tr', ''), // Turkish
         ],
         locale: locale,
         home: new LookAtMeHome(title: 'LookAtMe app'),
@@ -229,19 +225,15 @@ class _LookAtMeHomeState extends State<LookAtMeHome>
     }
   }
 
+  List languageData = [['de', 'Deutsch'], ['en', 'English'], ['es', 'Español'], ['fr', 'Français'], ['hi', 'हिंदी'], ['it', 'Italiano'], ['kp', '한국의'], ['tr', 'Türkçe']];
+
   List<RadioModel> _getLangList() {
-    if (_index == 0) {
-      _langList.add(new RadioModel(true, 'English'));
-      _langList.add(new RadioModel(false, 'Türkçe'));
-      _langList.add(new RadioModel(false, 'हिंदी'));
-    } else if (_index == 1) {
-      _langList.add(new RadioModel(false, 'English'));
-      _langList.add(new RadioModel(true, 'Türkçe'));
-      _langList.add(new RadioModel(false, 'हिंदी'));
-    } else if (_index == 1) {
-      _langList.add(new RadioModel(false, 'English'));
-      _langList.add(new RadioModel(false, 'Türkçe'));
-      _langList.add(new RadioModel(true, 'हिंदी'));
+    for (var i = 0; i < languageData.length; i++) {
+      if (_index == i) {
+        _langList.add(new RadioModel(true, languageData[i][1]));
+      } else {
+        _langList.add(new RadioModel(false, languageData[i][1]));
+      }
     }
 
     return _langList;
@@ -259,25 +251,17 @@ class _LookAtMeHomeState extends State<LookAtMeHome>
   void _initLanguage() async {
     Future<String> status = _getLanguageCode();
     status.then((result) {
-      if (result != null && result.compareTo('en') == 0) {
-        setState(() {
-          _index = 0;
-        });
+      setState(() {
+        _index = 0;
+      });
+      for (var i = 0; i < languageData.length; i++) {
+        if (result != null && result.compareTo(languageData[i][0]) == 0) {
+          setState(() {
+            _index = i;
+          });
+        }
       }
-      if (result != null && result.compareTo('hi') == 0) {
-        setState(() {
-          _index = 1;
-        });
-      }
-      if (result != null && result.compareTo('tr') == 0) {
-        setState(() {
-          _index = 2;
-        });
-      } else {
-        setState(() {
-          _index = 0;
-        });
-      }
+
       print("INDEX: $_index");
 
       _setupLangList();
@@ -286,9 +270,9 @@ class _LookAtMeHomeState extends State<LookAtMeHome>
 
   void _setupLangList() {
     setState(() {
-      _langList.add(new RadioModel(_index == 0 ? true : false, 'English'));
-      _langList.add(new RadioModel(_index == 1 ? true : false, 'हिंदी'));
-      _langList.add(new RadioModel(_index == 2 ? true : false, 'Türkçe'));
+      for (var i = 0; i < languageData.length; i++) {
+        _langList.add(new RadioModel(_index == i ? true : false, languageData[i][1]));
+      }
     });
   }
 
@@ -305,20 +289,10 @@ class _LookAtMeHomeState extends State<LookAtMeHome>
   void _handleRadioValueChanged() {
     print("SELCET_VALUE: " + _index.toString());
     setState(() {
-      switch (_index) {
-        case 0:
-          print("English");
-          _updateLocale('en', '');
-          break;
-        case 1:
-          print("Hindi");
-          _updateLocale('hi', '');
-          break;
-        case 2:
-          print("Turkish");
-          _updateLocale('tr', '');
-          break;
-      }
+
+      print(languageData[_index][1]);
+      _updateLocale(languageData[_index][0], '');
+
     });
   }
 }
