@@ -37,11 +37,26 @@ class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
 
   @override
   bool isSupported(Locale locale) =>
-      ['en', 'hi', 'tr'].contains(locale.languageCode);
+      ['de', 'en' , 'es', 'fr', 'hi', 'it', 'kp', 'tr'].contains(locale.languageCode);
 
   @override
   Future<AppLocalizations> load(Locale locale) => AppLocalizations.load(locale);
 
   @override
   bool shouldReload(AppLocalizationsDelegate old) => false;
+}
+
+class SpecificLocalizationDelegate extends LocalizationsDelegate<AppLocalizations> {
+  final Locale overriddenLocale;
+
+  const SpecificLocalizationDelegate(this.overriddenLocale);
+
+  @override
+  bool isSupported(Locale locale) => overriddenLocale != null;
+
+  @override
+  Future<AppLocalizations> load(Locale locale) => AppLocalizations.load(overriddenLocale);
+
+  @override
+  bool shouldReload(LocalizationsDelegate<AppLocalizations> old) => true;
 }
