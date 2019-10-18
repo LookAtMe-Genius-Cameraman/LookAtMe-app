@@ -5,4 +5,6 @@ the mobile entry point for T_System Remote UI. And the T_System is the (non-)mov
 
 ## Getting Started
 
-For Developing, Contributing or Using this device look at [me](https://github.com/connected-life/T_System).
+For Developing, Contributing or Using this device look at [me](https://github.com/LookAtMe-Genius-Cameraman).
+
+Powerd By [T_System](https://github.com/LookAtMe-Genius-Cameraman/T_System)
