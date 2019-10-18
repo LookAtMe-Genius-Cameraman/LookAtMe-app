@@ -45,8 +45,8 @@ android {
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        versionCode 15
-        versionName "0.6.1"
+        versionCode 16
+        versionName "0.7"
     }
 
     signingConfigs {
