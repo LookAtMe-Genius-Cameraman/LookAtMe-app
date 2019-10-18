@@ -73,3 +73,6 @@
 
 # Intellij Idea project settings
 .idea
+
+# Sign key
+android/key.properties
