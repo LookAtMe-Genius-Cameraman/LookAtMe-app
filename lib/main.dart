@@ -1,6 +1,7 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'package:look_at_me/after_layout.dart';
@@ -49,6 +50,11 @@ class _LookAtMeState extends State<LookAtMe> {
     if (this.localeLoaded == false) {
       return CircularProgressIndicator();
     } else {
+      SystemChrome.setEnabledSystemUIOverlays([]);
+      SystemChrome.setPreferredOrientations([
+        DeviceOrientation.portraitUp,
+        DeviceOrientation.portraitDown,
+      ]);
       return new MaterialApp(
         title: 'LookAtMe app',
         theme: new ThemeData(
