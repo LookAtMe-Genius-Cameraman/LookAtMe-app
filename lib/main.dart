@@ -62,6 +62,7 @@ class _LookAtMeState extends State<LookAtMe> {
         ),
         localizationsDelegates: [
           AppLocalizationsDelegate(),
+          const SpecificLocalizationDelegate(Locale('kp', '')),
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
         ],
@@ -70,7 +71,7 @@ class _LookAtMeState extends State<LookAtMe> {
           const Locale('en', ''), // English
           const Locale('es', ''), // Spanish
           const Locale('fr', ''), // French
-          const Locale('hi', ''), // Turkish
+          const Locale('hi', ''), // Hindi
           const Locale('it', ''), // Italian
           const Locale('kp', ''), // Korean
           const Locale('tr', ''), // Turkish
