@@ -1,4 +1,7 @@
 {
   "LookAtMe Device ID/Name": "LookAtMe डिवाइस आईडी / नाम",
-  "Connect": "जुडिये"
+  "Connect": "जुडिये",
+  "UNAVAILABLE!": "अनुपलब्ध!",
+  "LookAtMe Device is already in use.": "LookAtMe डिवाइस पहले से उपयोग में है।",
+  "OK": "ठीक"
 }

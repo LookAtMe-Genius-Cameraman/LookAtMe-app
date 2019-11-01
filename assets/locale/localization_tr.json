@@ -1,4 +1,7 @@
 {
   "LookAtMe Device ID/Name": "LookAtMe Cihaz Kimlik Numarası / İsmi",
-  "Connect": "Bağlan"
+  "Connect": "Bağlan",
+  "UNAVAILABLE!": "KULLANIM DIŞI",
+  "LookAtMe Device is already in use.": "LookAtMe cihazı halihazırda kullanımda.",
+  "OK": "TAMAM"
 }

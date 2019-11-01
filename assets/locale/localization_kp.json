@@ -1,4 +1,7 @@
 {
   "LookAtMe Device ID/Name": "LookAtMe 장치 ID / 이름",
-  "Connect": "잇다"
+  "Connect": "잇다",
+  "UNAVAILABLE!": "없는!",
+  "LookAtMe Device is already in use.": "LookAtMe 장치가 이미 사용 중입니다.",
+  "OK": "승인"
 }

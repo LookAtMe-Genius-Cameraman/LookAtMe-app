@@ -1,4 +1,7 @@
 {
   "LookAtMe Device ID/Name": "LookAtMe Device ID / Name",
-  "Connect": "Connect"
+  "Connect": "Connect",
+  "UNAVAILABLE!": "UNAVAILABLE!",
+  "LookAtMe Device is already in use.": "LookAtMe Device is already in use.",
+  "OK": "OK"
 }

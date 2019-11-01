@@ -1,4 +1,7 @@
 {
   "LookAtMe Device ID/Name": "LookAtMe ID / Nom de l'appareil",
-  "Connect": "Relier"
+  "Connect": "Relier",
+  "UNAVAILABLE!": "INDISPONIBLE!",
+  "LookAtMe Device is already in use.": "LookAtMe Device est déjà utilisé.",
+  "OK": "D'ACCORD"
 }

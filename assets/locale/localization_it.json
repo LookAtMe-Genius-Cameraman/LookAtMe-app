@@ -1,4 +1,7 @@
 {
   "LookAtMe Device ID/Name": "ID / Nome Dispositivo LookAtMe",
-  "Connect": "Collegare"
+  "Connect": "Collegare",
+  "UNAVAILABLE!": "NON DISPONIBILE!",
+  "LookAtMe Device is already in use.": "Il dispositivo LookAtMe è già in uso.",
+  "OK": "OK"
 }
