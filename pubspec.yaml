@@ -28,6 +28,7 @@ dependencies:
   webview_flutter: 0.2.0
   wifi: ^0.1.5
   ping_discover_network: ^0.2.0+1
+  rflutter_alert: ^1.0.2
 
 dev_dependencies:
   flutter_launcher_icons: "^0.7.2"
