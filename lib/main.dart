@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 import 'package:look_at_me/after_layout.dart';
 import 'package:look_at_me/connection.dart';
@@ -191,6 +192,7 @@ class _LookAtMeHomeState extends State<LookAtMeHome>
                           foundAndConnectDevice(context, idTextController.text);
                         } else {
                           print("empty");
+                          emptyIdentityAreaAlert(context);
                         }
                       },
                       color: Colors.blueGrey,
@@ -371,4 +373,49 @@ class RadioItem extends StatelessWidget {
       ),
     );
   }
+}
+
+emptyIdentityAreaAlert(context) {
+
+  var alertStyle = AlertStyle(
+    animationType: AnimationType.fromTop,
+    isCloseButton: false,
+    isOverlayTapDismiss: false,
+    animationDuration: Duration(milliseconds: 300),
+    backgroundColor: Colors.black,
+    alertBorder: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(10),
+      side: BorderSide(
+        color: Colors.grey,
+      ),
+    ),
+    titleStyle: TextStyle(
+      color: Colors.red,
+      fontWeight: FontWeight.bold,
+      fontSize: 26,
+    ),
+    descStyle: TextStyle(
+      color: Colors.white,
+      fontSize: 14,
+    ),
+  );
+
+  Alert(
+    context: context,
+    style: alertStyle,
+    type: AlertType.warning,
+    title: AppLocalizations.of(context).text('ID field can\'t be empty'),
+    desc: AppLocalizations.of(context).text('Enter LookAtMe\'s unique \'ID\' or name that you give it.'),
+    buttons: [
+      DialogButton(
+        child: Text(
+          AppLocalizations.of(context).text('OK'),
+          style: TextStyle(color: Colors.white, fontSize: 20),
+        ),
+        onPressed: () => Navigator.pop(context),
+        width: 100,
+        color: Colors.deepOrangeAccent,
+      )
+    ],
+  ).show();
 }
