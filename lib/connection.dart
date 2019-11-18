@@ -51,7 +51,7 @@ _makePostRequest(context, ipAddress, port, urls, deviceID) async {
       SystemChrome.setEnabledSystemUIOverlays([]);
       return new WebViewWebPage(
           url:
-              'http://$ipAddress:${port.toString()}$urls?id=${result["data"].toString()}');
+          'http://$ipAddress:${port.toString()}$urls?id=${result["data"].toString()}');
     }));
     return true;
   }
@@ -84,8 +84,8 @@ alreadyInUseAlert(context) {
       fontSize: 26,
     ),
     descStyle: TextStyle(
-        color: Colors.white,
-        fontSize: 14,
+      color: Colors.white,
+      fontSize: 14,
     ),
   );
 
