@@ -3,5 +3,8 @@
   "Connect": "Relier",
   "UNAVAILABLE!": "INDISPONIBLE!",
   "LookAtMe Device is already in use.": "LookAtMe Device est déjà utilisé.",
-  "OK": "D'ACCORD"
+  "OK": "D'ACCORD",
+
+  "ID field can't be empty": "Le champ ID ne peut pas être vide",
+  "Enter LookAtMe's unique 'ID' or name that you give it.": "Entrez l'identifiant unique de LookAtMe ou le nom que vous lui donnez."
 }

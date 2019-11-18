@@ -3,5 +3,8 @@
   "Connect": "Conectar",
   "UNAVAILABLE!": "¡INDISPONIBLE!",
   "LookAtMe Device is already in use.": "El dispositivo LookAtMe ya está en uso.",
-  "OK": "¡Sí!"
+  "OK": "¡Sí!",
+
+  "ID field can't be empty": "El campo ID no puede estar vacío",
+  "Enter LookAtMe's unique 'ID' or name that you give it.": "Ingrese el 'ID' único de LookAtMe o el nombre que le dio."
 }

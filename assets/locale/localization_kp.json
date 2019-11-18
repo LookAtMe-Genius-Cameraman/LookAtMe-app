@@ -3,5 +3,8 @@
   "Connect": "잇다",
   "UNAVAILABLE!": "없는!",
   "LookAtMe Device is already in use.": "LookAtMe 장치가 이미 사용 중입니다.",
-  "OK": "승인"
+  "OK": "승인",
+
+  "ID field can't be empty": "ID 입력란은 비워 둘 수 없습니다",
+  "Enter LookAtMe's unique 'ID' or name that you give it.": "LookAtMe의 고유 한 'ID'또는 이름을 입력하십시오."
 }

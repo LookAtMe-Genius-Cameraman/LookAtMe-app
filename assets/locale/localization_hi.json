@@ -3,5 +3,8 @@
   "Connect": "जुडिये",
   "UNAVAILABLE!": "अनुपलब्ध!",
   "LookAtMe Device is already in use.": "LookAtMe डिवाइस पहले से उपयोग में है।",
-  "OK": "ठीक"
+  "OK": "ठीक",
+
+  "ID field can't be empty": "आईडी फ़ील्ड खाली नहीं हो सकती",
+  "Enter LookAtMe's unique 'ID' or name that you give it.": "LookAtMe की विशिष्ट 'आईडी' या वह नाम दर्ज करें जो आप इसे देते हैं।"
 }

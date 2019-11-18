@@ -3,5 +3,7 @@
   "Connect": "Bağlan",
   "UNAVAILABLE!": "KULLANIM DIŞI",
   "LookAtMe Device is already in use.": "LookAtMe cihazı halihazırda kullanımda.",
-  "OK": "TAMAM"
+  "OK": "TAMAM",
+  "ID field can't be empty": "Kimlik alanı boş olamaz.",
+  "Enter LookAtMe's unique 'ID' or name that you give it.": "LookAtMe'nin kimlik numarasını ya da ona vermiş olduğunuz ismi girin."
 }
