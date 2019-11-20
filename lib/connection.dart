@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:ping_discover_network/ping_discover_network.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 import 'package:wifi/wifi.dart';
 import 'package:http/http.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
@@ -8,7 +10,6 @@ import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'package:look_at_me/web_view.dart';
 import 'package:look_at_me/localization/localizations.dart';
 
 foundAndConnectDevice(context, deviceID) async {
@@ -17,7 +18,7 @@ foundAndConnectDevice(context, deviceID) async {
   final String subnet = ip.substring(0, ip.lastIndexOf('.'));
   final int port = 5000;
 
-  final stream = NetworkAnalyzer.discover2('192.168.45', port);
+  final stream = NetworkAnalyzer.discover2(subnet, port);
   bool isConnected = false;
   while (!isConnected) {
     stream.listen((NetworkAddress addr) {
@@ -49,13 +50,31 @@ _makePostRequest(context, ipAddress, port, urls, deviceID) async {
     Navigator.of(context)
         .push(MaterialPageRoute<Null>(builder: (BuildContext context) {
       SystemChrome.setEnabledSystemUIOverlays([]);
-      return new WebViewWebPage(
-          url:
-          'http://$ipAddress:${port.toString()}$urls?id=${result["data"].toString()}');
+      return new WebView(
+        initialUrl:
+            'http://$ipAddress:${port.toString()}$urls?id=${result["data"].toString()}',
+        javascriptMode: JavascriptMode.unrestricted,
+        javascriptChannels: <JavascriptChannel>[
+          JavascriptChannel(
+              name: 'leaveDevice',
+              onMessageReceived: (JavascriptMessage msg) {
+                print("leave message received!");
+                Navigator.pop(context);
+              },
+          ),
+          JavascriptChannel(
+            name: 'shutdownDevice',
+            onMessageReceived: (JavascriptMessage msg) {
+              print("shutdown message received!");
+              SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+              exit(0);
+            },
+          ),
+        ].toSet(),
+      );
     }));
     return true;
-  }
-  else if (result["status"] == "ERROR") {
+  } else if (result["status"] == "ERROR") {
     if (result["message"] == "BUSY") {
       alreadyInUseAlert(context);
       return false;
@@ -65,7 +84,6 @@ _makePostRequest(context, ipAddress, port, urls, deviceID) async {
 }
 
 alreadyInUseAlert(context) {
-
   var alertStyle = AlertStyle(
     animationType: AnimationType.fromBottom,
     isCloseButton: false,
@@ -94,7 +112,8 @@ alreadyInUseAlert(context) {
     style: alertStyle,
     type: AlertType.warning,
     title: AppLocalizations.of(context).text('UNAVAILABLE!'),
-    desc: AppLocalizations.of(context).text('LookAtMe Device is already in use.'),
+    desc:
+        AppLocalizations.of(context).text('LookAtMe Device is already in use.'),
     buttons: [
       DialogButton(
         child: Text(
