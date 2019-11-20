@@ -1,7 +1,7 @@
 name: look_at_me
 description: the mobile entry point for T_System Remote UI. And the T_System is the (non-)moving objects tracking system via two axis camera motion (and as optionally n joint robotic arm) for raspberry pi distributions
 
-version: 0.8.21
+version: 0.8.5
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
@@ -24,8 +24,8 @@ dependencies:
   dio: 2.0.22
   shared_preferences: 0.5.3+4
   flare_flutter: any
-  flutter_webview_plugin: 0.3.0+2
-  webview_flutter: 0.2.0
+  flutter_webview_plugin: ^0.3.9+1
+  webview_flutter: ^0.3.9+1
   wifi: ^0.1.5
   ping_discover_network: ^0.2.0+1
   rflutter_alert: ^1.0.2
