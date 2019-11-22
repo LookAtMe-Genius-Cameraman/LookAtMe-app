@@ -4,7 +4,8 @@
   "UNAVAILABLE!": "NICHT VERFÜGBAR!",
   "LookAtMe Device is already in use.": "LookAtMe-Gerät wird bereits verwendet.",
   "OK": "OKAY",
-
   "ID field can't be empty": "Das ID-Feld darf nicht leer sein",
-  "Enter LookAtMe's unique 'ID' or name that you give it.": "Geben Sie die eindeutige 'ID' oder den Namen von LookAtMe ein, den Sie vergeben haben."
+  "Enter LookAtMe's unique 'ID' or name that you give it.": "Geben Sie die eindeutige 'ID' oder den Namen von LookAtMe ein, den Sie vergeben haben.",
+  "Not Exist!": "Nicht existieren!",
+  "LookAtMe is not found.": "LookAtMe wird nicht gefunden."
 }
