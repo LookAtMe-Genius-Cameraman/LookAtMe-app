@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
@@ -66,8 +67,8 @@ _makePostRequest(context, ipAddress, port, urls, deviceID) async {
             name: 'shutdownDevice',
             onMessageReceived: (JavascriptMessage msg) {
               print("shutdown message received!");
-              SystemChannels.platform.invokeMethod('SystemNavigator.pop');
-              exit(0);
+              const duration = const Duration(milliseconds: 1);
+              Timer(duration, closeApp);
             },
           ),
         ].toSet(),
@@ -80,6 +81,7 @@ _makePostRequest(context, ipAddress, port, urls, deviceID) async {
       return false;
     }
   }
+  deviceNotExistAlert(context);
   return false;
 }
 
@@ -126,4 +128,54 @@ alreadyInUseAlert(context) {
       )
     ],
   ).show();
+}
+
+deviceNotExistAlert(context) {
+  var alertStyle = AlertStyle(
+    animationType: AnimationType.fromBottom,
+    isCloseButton: false,
+    isOverlayTapDismiss: false,
+    animationDuration: Duration(milliseconds: 300),
+    backgroundColor: Colors.black,
+    alertBorder: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(10),
+      side: BorderSide(
+        color: Colors.grey,
+      ),
+    ),
+    titleStyle: TextStyle(
+      color: Colors.red,
+      fontWeight: FontWeight.bold,
+      fontSize: 26,
+    ),
+    descStyle: TextStyle(
+      color: Colors.white,
+      fontSize: 14,
+    ),
+  );
+
+  Alert(
+    context: context,
+    style: alertStyle,
+    type: AlertType.warning,
+    title: AppLocalizations.of(context).text('Not Exist!'),
+    desc:
+    AppLocalizations.of(context).text('LookAtMe is not found.'),
+    buttons: [
+      DialogButton(
+        child: Text(
+          AppLocalizations.of(context).text('OK'),
+          style: TextStyle(color: Colors.white, fontSize: 20),
+        ),
+        onPressed: () => Navigator.pop(context),
+        width: 100,
+        color: Colors.deepOrangeAccent,
+      )
+    ],
+  ).show();
+}
+
+void closeApp() {
+  SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+  exit(0);
 }
