@@ -1,15 +1,20 @@
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:back_button_interceptor/back_button_interceptor.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart';
 
 import 'package:look_at_me/after_layout.dart';
-import 'package:look_at_me/connection.dart';
 import 'package:look_at_me/caching.dart';
 import 'package:look_at_me/model/RadioModel.dart';
 import 'package:look_at_me/localization/localizations.dart';
+import 'connection.dart';
+import 'back_button.dart';
 
 void main() => runApp(new LookAtMe());
 
@@ -113,6 +118,19 @@ class _LookAtMeHomeState extends State<LookAtMeHome>
     with AfterLayoutMixin<LookAtMeHome> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
+  WidgetsBinding binding = WidgetsBinding.instance;
+
+  LifecycleEventHandler lifeCycleEventHandler =
+      new LifecycleEventHandler(resumeCallBack: () {
+    print("resuming app");
+    return;
+  }, suspendingCallBack: () {
+    disconnectFromDevice(deviceIpAddress, devicePort);
+    return;
+  });
+
+  final flutterWebviewPlugin = new FlutterWebviewPlugin();
+
   List<RadioModel> _langList = new List<RadioModel>();
   int _index = 0;
 
@@ -125,6 +143,9 @@ class _LookAtMeHomeState extends State<LookAtMeHome>
     super.initState();
 
     _initLanguage();
+    deviceConnected = false;
+    BackButtonInterceptor.add(myInterceptor);
+    binding.addObserver(lifeCycleEventHandler);
   }
 
   @override
@@ -136,6 +157,10 @@ class _LookAtMeHomeState extends State<LookAtMeHome>
     if (id.isNotEmpty) {
       idTextController.text = id;
     }
+    flutterWebviewPlugin.dispose();
+    BackButtonInterceptor.remove(myInterceptor);
+    print("called on termination");
+    binding.removeObserver(lifeCycleEventHandler);
     super.dispose();
   }
 
@@ -376,7 +401,6 @@ class RadioItem extends StatelessWidget {
 }
 
 emptyIdentityAreaAlert(context) {
-
   var alertStyle = AlertStyle(
     animationType: AnimationType.fromTop,
     isCloseButton: false,
@@ -405,7 +429,8 @@ emptyIdentityAreaAlert(context) {
     style: alertStyle,
     type: AlertType.warning,
     title: AppLocalizations.of(context).text('ID field can\'t be empty'),
-    desc: AppLocalizations.of(context).text('Enter LookAtMe\'s unique \'ID\' or name that you give it.'),
+    desc: AppLocalizations.of(context)
+        .text('Enter LookAtMe\'s unique \'ID\' or name that you give it.'),
     buttons: [
       DialogButton(
         child: Text(
@@ -418,4 +443,32 @@ emptyIdentityAreaAlert(context) {
       )
     ],
   ).show();
+}
+
+class LifecycleEventHandler extends WidgetsBindingObserver {
+  LifecycleEventHandler({this.resumeCallBack, this.suspendingCallBack});
+
+  final AsyncCallback resumeCallBack;
+  final AsyncCallback suspendingCallBack;
+
+  @override
+  Future<Null> didChangeAppLifecycleState(AppLifecycleState state) async {
+    switch (state) {
+      case AppLifecycleState.suspending:
+        {
+          if (deviceConnected) {
+            await suspendingCallBack();
+          }
+          print("suspending");
+        }
+        break;
+      case AppLifecycleState.inactive:
+        break;
+      case AppLifecycleState.paused:
+        break;
+      case AppLifecycleState.resumed:
+        await resumeCallBack();
+        break;
+    }
+  }
 }

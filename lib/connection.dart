@@ -12,6 +12,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:look_at_me/localization/localizations.dart';
+import 'back_button.dart';
+
+String deviceIpAddress;
+String devicePort;
 
 foundAndConnectDevice(context, deviceID) async {
   final String ip = await Wifi.ip;
@@ -21,14 +25,19 @@ foundAndConnectDevice(context, deviceID) async {
 
   final stream = NetworkAnalyzer.discover2(subnet, port);
   bool isConnected = false;
-  while (!isConnected) {
-    stream.listen((NetworkAddress addr) {
-      if (addr.exists) {
-        isConnected =
-            _makePostRequest(context, addr.ip, port, '/api/access', deviceID);
-      }
-    }).onDone(() => print('finish.'));
-  }
+  int existAddrCount = 0;
+  stream.listen((NetworkAddress addr) {
+    if (addr.exists) {
+      existAddrCount++;
+      isConnected =
+          _makePostRequest(context, addr.ip, port, '/api/access', deviceID);
+    }
+  }).onDone(() {
+    if (existAddrCount == 0) {
+      deviceNotExistAlert(context);
+    }
+    print('finish.');
+  });
 }
 
 _makePostRequest(context, ipAddress, port, urls, deviceID) async {
@@ -48,26 +57,33 @@ _makePostRequest(context, ipAddress, port, urls, deviceID) async {
 //    print(result);
 
   if (result["status"] == "OK") {
+    deviceIpAddress = ipAddress;
+    devicePort = port.toString();
+
     Navigator.of(context)
         .push(MaterialPageRoute<Null>(builder: (BuildContext context) {
       SystemChrome.setEnabledSystemUIOverlays([]);
+      setConnectedStatus(true);
       return new WebView(
         initialUrl:
             'http://$ipAddress:${port.toString()}$urls?id=${result["data"].toString()}',
         javascriptMode: JavascriptMode.unrestricted,
         javascriptChannels: <JavascriptChannel>[
           JavascriptChannel(
-              name: 'leaveDevice',
-              onMessageReceived: (JavascriptMessage msg) {
-                print("leave message received!");
-                Navigator.pop(context);
-              },
+            name: 'leaveDevice',
+            onMessageReceived: (JavascriptMessage msg) {
+              print("leave message received!");
+              Navigator.pop(context);
+              setConnectedStatus(false);
+            },
           ),
           JavascriptChannel(
             name: 'shutdownDevice',
             onMessageReceived: (JavascriptMessage msg) {
               print("shutdown message received!");
-              const duration = const Duration(milliseconds: 1);
+              Navigator.pop(context);
+              setConnectedStatus(false);
+              const duration = const Duration(seconds: 1);
               Timer(duration, closeApp);
             },
           ),
@@ -159,8 +175,7 @@ deviceNotExistAlert(context) {
     style: alertStyle,
     type: AlertType.warning,
     title: AppLocalizations.of(context).text('Not Exist!'),
-    desc:
-    AppLocalizations.of(context).text('LookAtMe is not found.'),
+    desc: AppLocalizations.of(context).text('LookAtMe is not found.'),
     buttons: [
       DialogButton(
         child: Text(
