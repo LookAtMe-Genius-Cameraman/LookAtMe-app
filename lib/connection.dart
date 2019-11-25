@@ -3,15 +3,16 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:ping_discover_network/ping_discover_network.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 import 'package:wifi/wifi.dart';
 import 'package:http/http.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:look_at_me/localization/localizations.dart';
+
 import 'back_button.dart';
 
 String deviceIpAddress;
@@ -64,31 +65,33 @@ _makePostRequest(context, ipAddress, port, urls, deviceID) async {
         .push(MaterialPageRoute<Null>(builder: (BuildContext context) {
       SystemChrome.setEnabledSystemUIOverlays([]);
       setConnectedStatus(true);
-      return new WebView(
-        initialUrl:
-            'http://$ipAddress:${port.toString()}$urls?id=${result["data"].toString()}',
-        javascriptMode: JavascriptMode.unrestricted,
-        javascriptChannels: <JavascriptChannel>[
-          JavascriptChannel(
-            name: 'leaveDevice',
-            onMessageReceived: (JavascriptMessage msg) {
-              print("leave message received!");
-              Navigator.pop(context);
-              setConnectedStatus(false);
-            },
-          ),
-          JavascriptChannel(
-            name: 'shutdownDevice',
-            onMessageReceived: (JavascriptMessage msg) {
-              print("shutdown message received!");
-              Navigator.pop(context);
-              setConnectedStatus(false);
-              const duration = const Duration(seconds: 1);
-              Timer(duration, closeApp);
-            },
-          ),
-        ].toSet(),
-      );
+
+    return new WebviewScaffold(
+      url: 'http://$ipAddress:${port.toString()}$urls?id=${result["data"].toString()}',
+      hidden: true,
+      appBar: null,
+      javascriptChannels: <JavascriptChannel>[
+        JavascriptChannel(
+          name: 'leaveDevice',
+          onMessageReceived: (JavascriptMessage msg) {
+            print("leave message received: ${msg.message}");
+            print("leave message received!");
+            Navigator.pop(context);
+            setConnectedStatus(false);
+          },
+        ),
+        JavascriptChannel(
+          name: 'shutdownDevice',
+          onMessageReceived: (JavascriptMessage msg) {
+            print("shutdown message received!");
+            Navigator.pop(context);
+            setConnectedStatus(false);
+            const duration = const Duration(seconds: 1);
+            Timer(duration, closeApp);
+          },
+        ),
+      ].toSet(),
+    );
     }));
     return true;
   } else if (result["status"] == "ERROR") {
