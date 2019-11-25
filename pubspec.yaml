@@ -29,6 +29,7 @@ dependencies:
   ping_discover_network: ^0.2.0+1
   rflutter_alert: ^1.0.2
   back_button_interceptor: ^4.2.1
+  url_launcher: ^5.2.5
 
 dev_dependencies:
   flutter_launcher_icons: "^0.7.2"
