@@ -1,9 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart' show SynchronousFuture;
 import 'package:flutter/services.dart' show rootBundle;
 
 class AppLocalizations {
