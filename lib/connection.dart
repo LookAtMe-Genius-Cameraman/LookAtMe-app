@@ -7,6 +7,7 @@ import 'package:wifi/wifi.dart';
 import 'package:http/http.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -17,6 +18,7 @@ import 'back_button.dart';
 
 String deviceIpAddress;
 String devicePort;
+String downloadPath;
 
 foundAndConnectDevice(context, deviceID) async {
   final String ip = await Wifi.ip;
@@ -24,7 +26,7 @@ foundAndConnectDevice(context, deviceID) async {
   final String subnet = ip.substring(0, ip.lastIndexOf('.'));
   final int port = 5000;
 
-  final stream = NetworkAnalyzer.discover2(subnet, port);
+  final stream = NetworkAnalyzer.discover2("192.168.45", port);
   bool isConnected = false;
   int existAddrCount = 0;
   stream.listen((NetworkAddress addr) {
@@ -88,6 +90,18 @@ _makePostRequest(context, ipAddress, port, urls, deviceID) async {
             setConnectedStatus(false);
             const duration = const Duration(seconds: 1);
             Timer(duration, closeApp);
+          },
+        ),
+        JavascriptChannel(
+          name: 'performTask',
+          onMessageReceived: (JavascriptMessage msg) {
+          },
+        ),
+        JavascriptChannel(
+          name: 'downloadRecord',
+          onMessageReceived: (JavascriptMessage msg) async {
+            print("download triggered.");
+            await launch('http://$ipAddress:${port.toString()}${msg.message}');
           },
         ),
       ].toSet(),
