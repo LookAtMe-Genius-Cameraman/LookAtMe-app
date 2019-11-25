@@ -1,13 +1,14 @@
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:back_button_interceptor/back_button_interceptor.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:back_button_interceptor/back_button_interceptor.dart';
 
 import 'package:look_at_me/after_layout.dart';
 import 'package:look_at_me/caching.dart';
@@ -16,7 +17,13 @@ import 'package:look_at_me/localization/localizations.dart';
 import 'connection.dart';
 import 'back_button.dart';
 
-void main() => runApp(new LookAtMe());
+//void main() => runApp(new LookAtMe());
+
+void main() async {
+  downloadPath = (await getApplicationDocumentsDirectory()).path;
+
+  runApp(new LookAtMe());
+}
 
 class LookAtMe extends StatefulWidget {
   static void setLocale(BuildContext context, Locale newLocale) async {
